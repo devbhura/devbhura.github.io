@@ -11,6 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 	</head>
+    
 	<body class="is-preload">
 
         <!-- Header -->
@@ -31,6 +32,7 @@
 								
 								<li><a href="index.html#portfolio" id="portfolio-link"><span class="icon solid fa-th">Portfolio</span></a></li>
 								<li><a href="index.html#about" id="about-link"><span class="icon solid fa-user">About Me</span></a></li>
+								<li><a href="resume.html" id="resume-link"><span class="icon solid fa-th">Resume</span></li>
 								
 							</ul>
 						</nav>
@@ -74,20 +76,119 @@
                     
                     
                     <h2>Overview</h2>
-                    <p align="left">
+                    <p align="justify">
                         
                         In this project, a ping-pong ball's trajectory was controlled using Franka Panda robot to manipulate a white board.
 
                         The ping pong ball can be controlled to do two functionalities:
-                        1. Follow a line trajectory drawn on a white board.
-
-                        2. Follow the path solved by our maze solver algorithm, with a maze drawn on a white board.
-
-                        The project consists of two main parts. First part is the perception, where we used a real sense camera as our sensor to capture the transient positions of ball and board, and used OpenCV library to process the sensing images. Second part was the control of the ball. There were two PD controllers that were implemented to control the ping-pong ball and make it follow the target trajectory on the white board. The higher level control loop takes ball positions as input and outputs desired angles of corresponding two arm joints. Then the updated joint angles received by the low level control loop. By tuning PD gains, this loop was able to send desired efforts to robot arm through ros_control topic.
-
-                        Team members: Devesh Bhura, Davin Landry, Kevin Nella, Daelan Roosa, Haozhi Zhang
                     </p>
-                
+
+                        <ol align="left">
+                            <li>Follow a line trajectory drawn on a white board.</li>
+                            <li>Follow the path solved by our maze solver algorithm, with a maze drawn on a white board.</li>
+                          </ol>
+                        <p align="justify">
+                        The project consists of two main parts. First part is the perception, where we used a real sense camera as our sensor to capture the transient positions of ball and board, and used OpenCV library to process the sensing images. Second part was the control of the ball. There were two PD controllers that were implemented to control the ping-pong ball and make it follow the target trajectory on the white board. The higher level control loop takes ball positions as input and outputs desired angles of corresponding two arm joints. Then the updated joint angles received by the low level control loop. By tuning PD gains, this loop was able to send desired efforts to robot arm through ros_control topic.
+                        </p>
+                        <p align="justify">   Team members: Devesh Bhura, Davin Landry, Kevin Nella, Daelan Roosa, Haozhi Zhang
+                    </p>
+
+                    <h2> Video Demo </h2>
+
+                    <p align="left" style="padding: 1px; margin: 1px;">Waveform Path:</p>
+
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/JgTTlsu-46o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    
+                    <p align="left" style="padding: 1px; margin: 1px;">NU Path:</p>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/7FRQeDtIDE8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                    <p align="left" style="padding: 1px; margin: 1px;">Maze:</p>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/Pka11LbdCQA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                    <h2 >Quickstart Guide</h2>
+                    <ol align="left">
+                        <li> Set up robot and connect to work station: https://nu-msr.github.io/me495_site/franka.html; Connect real sense camera.</li>
+                        <li> Command to launch all nodes needed: roslaunch balance_board maze.launch</li>
+                        <li>To set robot to home position: rosservice call /home</li>
+                        <li> The command for each of the two options: </li>
+                        <ol align="left">
+                            <li> To draw a line trajectory on the board: rosservice call /line_follow</li>
+                            <li> To draw a maze on board: rosservice call /maze_follow</li>
+                        </ol>
+                        <li> After trajectory has been generated, to start: rosservice call /start</li>
+                        <li> To finish playing, call: rosservice call /stop</li>
+                    
+                    </ol>
+
+                    <h2> Package Details </h2>
+                    <p align="left" style="padding: 1px; margin: 1px;">balance_board: main ros package</p>
+
+                    <p align="left" style="padding: 1px; margin: 1px;">maze.launch, the main launch file including:</p>
+
+                    <ol align="left" >
+                        <li> a launch file pd_controller.launch: a sub launch file. </li>
+                        <li> a node trajectory_manager : take inputs of current ball pose and map parameters 
+                            from vision node in each frame, output the target ball pose.
+                             </li>
+                    </ol>
+                    <p align="left" style="padding: 1px; margin: 1px;">pd_controller.launch:</p>
+
+                    <ol align="left" >
+                        <li> ros_control_interface.launch : a sub launch file.</li>
+                        <li> vision: a node using OpenCV libary processing images to output a current ball 
+                            pose in each frame and map parameters.   </li>
+                        <li> a node pd_controller: a node using a high-level tuned PD controller to calculate 
+                            a desired angle update in each frame.   </li>
+                    </ol>
+
+                    <p align="left" style="padding: 1px; margin: 1px;"> ros_control_interface.launch :</p>
+
+                    <ol align="left" >
+                        <li> panda_control_moveit_rviz.launch: a launch file to initialize basic robot configurations. </li>
+                        <li> pos_control_spawner: a node to spawn a position controller in ROS.  </li>
+                        <li> ros_control_interface: a node using a low-level tuned PD controller to give the desired effort command to robot.  </li>
+                    </ol>
+
+                    <h2>Architecture</h2>
+
+                    <img src="images/control_architecture.png">
+
+                    <h2>Control Loop</h2>
+
+                    <img src="images/control_loop.png">
+
+                    <h2>Computer Vision</h2>
+
+                    <p align="justify">
+                        An intel Realsense D435i camera is used detect the realtime location of the ball and the marks 
+                        on the board. It does this by color thresholding the colors orange, blue, pink, and purple for 
+                        the ball, waypoint 1, waypoint 2, and the maze respectivly. The vision pipeline processes and 
+                        extracts the data by creating a pixel mask, calculating the contrours, and extracting the 
+                        centroids of those contours. The ball coordinates are published as a Ball_Pose() msg to the 
+                        ball_pose topic. The maze mask data is passed to the service callbacks relating to the 
+                        maze_follow and line_follow services. It then draws all contours over image feed and 
+                        displays the resulting images in realtime.
+                    </p>
+
+                    <h2>Maze Solver Algorithm</h2>
+                    <p align="justify"> 
+                        The Breadth First search method is used to solve the maze and generate a trajectory for 
+                        the ball to follow. To do so, the algorithm computes two cost maps, one where the points 
+                        farthest away from the walls of the maze are assigned the lowest value, and another cost
+                         map that assigns higher value to the points furthest away from the starting point. 
+                         The algorithm adds these two maps and does gradient descent from the start point to 
+                         the goal, interating through the neighboring cells and finding a path.
+                    </p>
+
+                    <h2> Future Improvement</h2>
+                    <p align ="left">
+                        When we set our start position on the corners of board, sometimes the ball is hard to be 
+                        balanced initially and could cause drastic motion of robot arm. One way to solve this 
+                        issue might be adding more dimensions in our control by using more joints to achieve 
+                        more dynamical balance when putting the ball in any position.
+
+                    </p>
+
                 </div>
             </section>
         
