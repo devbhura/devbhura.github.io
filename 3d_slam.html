@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<!--
+	Prologue by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Prologue by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+    
+	<body class="is-preload">
+
+        <!-- Header -->
+			<div id="header">
+
+				<div class="top">
+
+					<!-- Logo -->
+						<div id="logo">
+							<span class="image avatar48"><img src="images/Headshot_small.jpg" alt="" /></span>
+							<h1 id="title">Devesh Bhura</h1>
+							<p>Robotics Engineer</p>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								
+								<li><a href="index.html#portfolio" id="portfolio-link"><span class="icon solid fa-th">Portfolio</span></a></li>
+								<li><a href="index.html#about" id="about-link"><span class="icon solid fa-user">About Me</span></a></li>
+								<li><a href="resume.html" id="resume-link"><span class="icon solid fa-th">Resume</span></li>
+								
+							</ul>
+						</nav>
+
+				</div>
+
+                <div class="bottom">
+
+					<!-- Social Icons -->
+						<ul class="icons">
+							<li><a href="https://twitter.com/devbhura" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="https://www.linkedin.com/in/devesh-bhura/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://github.com/devbhura" class="icon brands fa-github"><span class="label">Github</span></a></li>
+							<!-- <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+							<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li> -->
+						</ul>
+
+				</div>
+
+			</div>
+
+		<!-- Main -->
+        <div id="main">
+            
+            <section id="Balance the Board" class="post">
+                <!-- <div class="container"> -->
+
+                    <header class="major">
+                        <h2>3D SLAM and enhanced mapping for terrian navigation</h2>
+                        <span class="date">Jan 2022 - March 2022</span>
+                        <p>Use rtabmap for 3D SLAM and create a custom map to go over small obstacles</p>
+                        
+                    </header>
+                    <style>
+                        .iframe-container {
+                              text-align:left;
+                                width:100%;
+                        }
+                    </style><br/>
+                <div class="container">
+                    
+                    
+                    <h2>Overview</h2>
+                    <p align="justify">
+                        
+                        The repository implements 3D SLAM package, rtabmap, for navigation of the jackal robot. The project clusters obstacles and creates a costmap that allows move base to move over small obstacles. 
+
+                        The ping pong ball can be controlled to do two functionalities:
+                    </p>
+
+                        <ol align="left">
+                            <li>Follow a line trajectory drawn on a white board.</li>
+                            <li>Follow the path solved by our maze solver algorithm, with a maze drawn on a white board.</li>
+                          </ol>
+                        <p align="justify">
+                        The project consists of two main parts. First part is the perception, where we used a real sense camera as our sensor to capture the transient positions of ball and board, and used OpenCV library to process the sensing images. Second part was the control of the ball. There were two PD controllers that were implemented to control the ping-pong ball and make it follow the target trajectory on the white board. The higher level control loop takes ball positions as input and outputs desired angles of corresponding two arm joints. Then the updated joint angles received by the low level control loop. By tuning PD gains, this loop was able to send desired efforts to robot arm through ros_control topic.
+                        </p>
+                        <p align="justify">   Team members: Devesh Bhura, Davin Landry, Kevin Nella, Daelan Roosa, Haozhi Zhang
+                    </p>
+
+                    <h2> Video Demo </h2>
+
+                    <p align="left" style="padding: 1px; margin: 1px;">RVIZ With original map:</p>
+
+                    <iframe width="560" height="315" src="https://youtu.be/mh6tp0GCJg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    
+                    <p align="left" style="padding: 1px; margin: 1px;">Real Robot with original map:</p>
+                    <iframe width="560" height="315" src="https://youtu.be/0GyZ2B7ILJ8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                    <p align="left" style="padding: 1px; margin: 1px;">RVIZ with custom costmap:</p>
+                    <iframe width="560" height="315" src="https://youtu.be/Fy4MezXpsys" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                    <p align="left" style="padding: 1px; margin: 1px;">Real robot going over obstacle :</p>
+                    <iframe width="560" height="315" src="https://youtu.be/tTjn8FdkOCQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                    <h2 >Quickstart Guide</h2>
+                    <ol align="left">
+                        <li> Set up robot and connect to work station: https://nu-msr.github.io/me495_site/franka.html; Connect real sense camera.</li>
+                        <li> Command to launch all nodes needed: roslaunch balance_board maze.launch</li>
+                        <li>To set robot to home position: rosservice call /home</li>
+                        <li> The command for each of the two options: </li>
+                        <ol align="left">
+                            <li> To draw a line trajectory on the board: rosservice call /line_follow</li>
+                            <li> To draw a maze on board: rosservice call /maze_follow</li>
+                        </ol>
+                        <li> After trajectory has been generated, to start: rosservice call /start</li>
+                        <li> To finish playing, call: rosservice call /stop</li>
+                    
+                    </ol>
+
+                    <h2> Package Details </h2>
+                    <p align="left" style="padding: 1px; margin: 1px;">balance_board: main ros package</p>
+
+                    <p align="left" style="padding: 1px; margin: 1px;">maze.launch, the main launch file including:</p>
+
+                    <ol align="left" >
+                        <li> a launch file pd_controller.launch: a sub launch file. </li>
+                        <li> a node trajectory_manager : take inputs of current ball pose and map parameters 
+                            from vision node in each frame, output the target ball pose.
+                             </li>
+                    </ol>
+                    <p align="left" style="padding: 1px; margin: 1px;">pd_controller.launch:</p>
+
+                    <ol align="left" >
+                        <li> ros_control_interface.launch : a sub launch file.</li>
+                        <li> vision: a node using OpenCV libary processing images to output a current ball 
+                            pose in each frame and map parameters.   </li>
+                        <li> a node pd_controller: a node using a high-level tuned PD controller to calculate 
+                            a desired angle update in each frame.   </li>
+                    </ol>
+
+                    <p align="left" style="padding: 1px; margin: 1px;"> ros_control_interface.launch :</p>
+
+                    <ol align="left" >
+                        <li> panda_control_moveit_rviz.launch: a launch file to initialize basic robot configurations. </li>
+                        <li> pos_control_spawner: a node to spawn a position controller in ROS.  </li>
+                        <li> ros_control_interface: a node using a low-level tuned PD controller to give the desired effort command to robot.  </li>
+                    </ol>
+                    <h2> Future Improvement</h2>
+                    <p align ="left">
+                        
+                    </p>
+
+                </div>
+            </section>
+        
+        </div>
