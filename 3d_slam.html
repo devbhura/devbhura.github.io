@@ -80,33 +80,22 @@
                         
                         The repository implements 3D SLAM package, rtabmap, for navigation of the jackal robot. The project clusters obstacles and creates a costmap that allows move base to move over small obstacles. 
 
-                        The ping pong ball can be controlled to do two functionalities:
-                    </p>
-
-                        <ol align="left">
-                            <li>Follow a line trajectory drawn on a white board.</li>
-                            <li>Follow the path solved by our maze solver algorithm, with a maze drawn on a white board.</li>
-                          </ol>
-                        <p align="justify">
-                        The project consists of two main parts. First part is the perception, where we used a real sense camera as our sensor to capture the transient positions of ball and board, and used OpenCV library to process the sensing images. Second part was the control of the ball. There were two PD controllers that were implemented to control the ping-pong ball and make it follow the target trajectory on the white board. The higher level control loop takes ball positions as input and outputs desired angles of corresponding two arm joints. Then the updated joint angles received by the low level control loop. By tuning PD gains, this loop was able to send desired efforts to robot arm through ros_control topic.
-                        </p>
-                        <p align="justify">   Team members: Devesh Bhura, Davin Landry, Kevin Nella, Daelan Roosa, Haozhi Zhang
-                    </p>
+                        The jackal used rtabmap to do 3D SLAM. 
 
                     <h2> Video Demo </h2>
 
                     <p align="left" style="padding: 1px; margin: 1px;">RVIZ With original map:</p>
 
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/mh6tp0GCJg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/mh6tp0GCJg8" title="YouTube video player" frameborder="0" allow="" allowfullscreen></iframe>
                     
                     <p align="left" style="padding: 1px; margin: 1px;">Real Robot with original map:</p>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/0GyZ2B7ILJ8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/0GyZ2B7ILJ8" title="YouTube video player" frameborder="0" allow="" allowfullscreen></iframe>
 
                     <p align="left" style="padding: 1px; margin: 1px;">RVIZ with custom costmap:</p>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/Fy4MezXpsys" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/Fy4MezXpsys" title="YouTube video player" frameborder="0" allow="" allowfullscreen></iframe>
 
                     <p align="left" style="padding: 1px; margin: 1px;">Real robot going over obstacle :</p>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/tTjn8FdkOCQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/tTjn8FdkOCQ" title="YouTube video player" frameborder="0" allow="" allowfullscreen></iframe>
 
                     <h2 >Quickstart Guide</h2>
                     <ol align="left">
