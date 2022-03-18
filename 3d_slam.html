@@ -99,47 +99,12 @@
 
                     <h2 >Quickstart Guide</h2>
                     <ol align="left">
-                        <li> Set up robot and connect to work station: https://nu-msr.github.io/me495_site/franka.html; Connect real sense camera.</li>
-                        <li> Command to launch all nodes needed: roslaunch balance_board maze.launch</li>
-                        <li>To set robot to home position: rosservice call /home</li>
-                        <li> The command for each of the two options: </li>
-                        <ol align="left">
-                            <li> To draw a line trajectory on the board: rosservice call /line_follow</li>
-                            <li> To draw a maze on board: rosservice call /maze_follow</li>
-                        </ol>
-                        <li> After trajectory has been generated, to start: rosservice call /start</li>
-                        <li> To finish playing, call: rosservice call /stop</li>
+                        <li> 
                     
                     </ol>
 
                     <h2> Package Details </h2>
-                    <p align="left" style="padding: 1px; margin: 1px;">balance_board: main ros package</p>
-
-                    <p align="left" style="padding: 1px; margin: 1px;">maze.launch, the main launch file including:</p>
-
-                    <ol align="left" >
-                        <li> a launch file pd_controller.launch: a sub launch file. </li>
-                        <li> a node trajectory_manager : take inputs of current ball pose and map parameters 
-                            from vision node in each frame, output the target ball pose.
-                             </li>
-                    </ol>
-                    <p align="left" style="padding: 1px; margin: 1px;">pd_controller.launch:</p>
-
-                    <ol align="left" >
-                        <li> ros_control_interface.launch : a sub launch file.</li>
-                        <li> vision: a node using OpenCV libary processing images to output a current ball 
-                            pose in each frame and map parameters.   </li>
-                        <li> a node pd_controller: a node using a high-level tuned PD controller to calculate 
-                            a desired angle update in each frame.   </li>
-                    </ol>
-
-                    <p align="left" style="padding: 1px; margin: 1px;"> ros_control_interface.launch :</p>
-
-                    <ol align="left" >
-                        <li> panda_control_moveit_rviz.launch: a launch file to initialize basic robot configurations. </li>
-                        <li> pos_control_spawner: a node to spawn a position controller in ROS.  </li>
-                        <li> ros_control_interface: a node using a low-level tuned PD controller to give the desired effort command to robot.  </li>
-                    </ol>
+                    
                     <h2> Future Improvement</h2>
                     <p align ="left">
                         
