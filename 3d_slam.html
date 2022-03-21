@@ -80,8 +80,24 @@
                         
                         The repository implements 3D SLAM package, rtabmap, for navigation of the jackal robot. The project clusters obstacles and creates a costmap that allows move base to move over small obstacles. 
 
-                        The jackal used rtabmap to do 3D SLAM. 
+                    <h2>Dependencies</h2>
+                    Hardware
+                    <ol align="left">
+                        <li> Clearpath Jackal Robot </li>
+                        <li> Velodyne-16 lidar </li>
+                        <li> Intel Realsense Camera D435i </li>
+                    
+                    </ol>
 
+                    Software
+                    <ol align="left">
+                        <li> ROS Noetic, Rviz, Gazebo </li>
+                        <li> rtabmap </li>
+                        <li> costmap2d </li>
+                        <li> PCL </li>
+                    
+                    </ol>
+                    
                     <h2> Video Demo </h2>
 
                     <p align="left" style="padding: 1px; margin: 1px;">RVIZ With original map:</p>
@@ -105,8 +121,22 @@
 
                     <h2> Package Details </h2>
                     
+                    <h3> 3D SLAM </h3>
+                    <p align ="justify">
+                    Rtabmap is used to create a lidar map. Rtabmap used RGB-D SLAM approach, using the Velodyne Lidar PointCloud and Intel Realsense D435i camera to create a 3D PointCloud map. Creating an accurate lidar pointcloud map is used to create 2D occupancy map. 
+                    
+                    </p>
+                    <h3> PCL Clustering and Costmap2D </h3>
+                    <p align ="justify">
+
+                    Although rtabmap produces an occupancy map, it is not good enough for navigation as it has many grid points that are occupied due to noisy lidar data. Therefore clustering of objects based on rtabmap pointcloud gives a better sense of where large obstacles are. Using this clustering, a costmap is created where small obstales over which the jackal can go over is shown as available, while only large obstacles are make the costmap region occupied. 
+                    
+                    </p>
+
                     <h2> Future Improvement</h2>
-                    <p align ="left">
+                    <p align ="justify">
+                        The future work includes running the jackal in an outdoor environment to see terrain navigation, and implement autonomous navigation on the jackal. 
+
                         
                     </p>
 
