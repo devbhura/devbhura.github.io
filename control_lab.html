@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Devesh Bhura" />
+  <meta name="dcterms.date" content="2021-05-05" />
+  <title>AME 443 Final Report 2 Devesh Bhura</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">AME 443 Final Report 2 Devesh Bhura</h1>
+<p class="author">Devesh Bhura</p>
+<p class="date">5 May 2021</p>
+</header>
+<h1 id="introduction">Introduction</h1>
+<p>The report below details the process of building several controllers,
+such as PD and PID controllers for 2-DOF systems. The 2-DOF system
+consists of two circular plates connected by a flexible rod that acts as
+a torsional spring, as shown below in figure 1.</p>
+<figure>
+<img src="Schematic.png" style="width:70.0%"
+alt="Schematic diagram of 2-DOF system setup" />
+<figcaption aria-hidden="true">Schematic diagram of 2-DOF system
+setup</figcaption>
+</figure>
+<p>Torque <span class="math inline"><em>τ</em></span> is applied to the
+lower plate which moves the plate <span
+class="math inline"><em>I</em><sub>1</sub></span>. The plate <span
+class="math inline"><em>I</em><sub>1</sub></span> moves an angle <span
+class="math inline"><em>θ</em><sub>1</sub></span>, which is directly
+controlled by the controller. <span
+class="math inline"><em>I</em><sub>1</sub></span> is also connected to
+the plate <span class="math inline"><em>I</em><sub>2</sub></span>
+through a flexible rod. The motion in <span
+class="math inline"><em>I</em><sub>1</sub></span> causes motion in <span
+class="math inline"><em>I</em><sub>2</sub></span>. This motion is
+captured by <span class="math inline"><em>θ</em><sub>2</sub></span>. The
+objective in this report is to show various controllers for <span
+class="math inline"><em>I</em><sub>1</sub></span> and <span
+class="math inline"><em>I</em><sub>2</sub></span>.</p>
+<p>To identify the 2-DOF system above, the following assumptions have
+been made: 1. The system is linear; 2. There is no stiction; 3. The
+hardware can be modeled as a simple gain instead of a complex function;
+4. There is mo delay in the system; 5. The system is continuous.</p>
+<p>Using these assumptions, the system is said to be governed by the
+differential equations of motion given below:</p>
+<p><span class="math display">$$I_1\ddot{\theta_1} + (c_1 + c_2)
+\dot{\theta_1} + (k_1+ k_2)\theta_1 - c_2\dot{\theta_2} - k_2\theta_2 =
+\tau(t)$$</span></p>
+<p><span class="math display">$$I_2\ddot{\theta_2} + (c_2 + c_3)
+\dot{\theta_2} + (k_2+ k_3)\theta_2 - c_2\dot{\theta_1} - k_2\theta_1 =
+0$$</span></p>
+<p>Taking Laplace transform and rearranging:</p>
+<p><span
+class="math display"><em>X</em><sub>1</sub>(<em>s</em>) + [−<em>c</em><sub>2</sub><em>s</em>−<em>k</em><sub>2</sub>]<em>X</em><sub>2</sub>(<em>s</em>) = <em>τ</em>(<em>s</em>)</span></p>
+<p><span
+class="math display"><em>X</em><sub>2</sub>(<em>s</em>) + [−<em>c</em><sub>2</sub><em>s</em>−<em>k</em><sub>2</sub>]<em>X</em><sub>1</sub>(<em>s</em>) = 0</span></p>
+<p>Written in matrix form: D(s)X(s) = F(s) <span
+class="math display">$$D(s) =
+    \begin{bmatrix}
+        I_1s^2 + (c_1 + c_2)s + (k_1 + k_2) &amp; -c_2s - k_2\\
+        -c_2s - k_2 &amp; I_2s^2 + (c_2 + c_3)s + (k_2 + k_3)\\
+    \end{bmatrix};
+X(s) = \begin{bmatrix}
+        X_1(s)\\
+        X_2(s)\\
+    \end{bmatrix};
+F(s) = \begin{bmatrix}
+        \tau(s)\\
+        0\\
+    \end{bmatrix}$$</span></p>
+<p>Now, <span
+class="math display"><em>X</em>(<em>s</em>) = <em>D</em>(<em>s</em>)<sup>−1</sup><em>F</em>(<em>s</em>)</span></p>
+<p>Simplifying this matrix operation, and assuming <span
+class="math inline"><em>τ</em>(<em>s</em>)</span> = <span
+class="math inline"><em>K</em><sub><em>H</em><em>W</em></sub></span>R(s)
+we can say that: <span class="math display">$$\frac{X_1(s)}{R(s)} =
+G_{col} = K_{HW} \frac{I_2s^2 + (c_2 + c_3)s + (k_2 +
+k_3)}{det(D(s))}$$</span></p>
+<p>This transfer function <span
+class="math inline"><em>G</em><sub><em>c</em><em>o</em><em>l</em></sub></span>
+defines the motion of the collocated system <span
+class="math inline"><em>I</em><sub>1</sub></span>. Collocated system is
+controlled directly by the actuator.</p>
+<p>Similarly, <span class="math display">$$\frac{X_2(s)}{R(s)} =
+G_{ncol} =K_{HW} \frac{c_2s + k_2}{det(D(s))}$$</span></p>
+<p>The above equation defines the motion of the non-collocated plant,
+that is <span class="math inline"><em>I</em><sub>2</sub></span>. This
+plant is called non-collocated as it is not directly controlled by the
+actuators, but rather is influenced by the motion of <span
+class="math inline"><em>I</em><sub>1</sub></span>.</p>
+<p>The ratio between <span
+class="math inline"><em>G</em><sub><em>c</em><em>o</em><em>l</em></sub></span>
+and <span
+class="math inline"><em>G</em><sub><em>n</em><em>c</em><em>o</em><em>l</em></sub></span>
+is <span class="math inline"><em>G</em><sub>21</sub></span>: <span
+class="math inline">$G_{21} = \frac{G_{col}}{G_{ncol}}$</span></p>
+<h1 id="system-identification">System Identification</h1>
+<p>To identify the system parameters, frequency domain analysis was
+conducted. The frequency response of a system was obtained by giving the
+system a sinesweep and capturing its response, and also by giving it a
+single sinusoidal input and recording its output. These results from
+these two methods are shown below.</p>
+<p>From these graphs, we can get <span
+class="math inline"><em>ω</em><sub>1</sub>, <em>ω</em><sub>2</sub>, <em>ω</em><sub><em>z</em></sub>, <em>ζ</em><sub>1</sub>, <em>ζ</em><sub>2</sub>, <em>ζ</em><sub><em>z</em></sub></span>
+using the Half-Power method. These parameters define the system in terms
+of the model parameters. The <span
+class="math inline"><em>G</em><sub><em>c</em><em>o</em><em>l</em></sub></span>
+and <span
+class="math inline"><em>G</em><sub><em>n</em><em>c</em><em>o</em><em>l</em></sub></span>
+defined in equation (6) and (7) can also be defined by the following
+equations:</p>
+<p><span class="math display">$$G_{col} = K' \frac{s^2 +
+2\omega_z\zeta_zs + \omega_z^2}{(s^2 + 2\omega_1\zeta_1s +
+\omega_1^2)(s^2 + 2\omega_2\zeta_2s + \omega_2^2)}$$</span></p>
+<p><span class="math display">$$G_{ncol} = K' \frac{\omega_z^2}{(s^2 +
+2\omega_1\zeta_1s + \omega_1^2)(s^2 + 2\omega_2\zeta_2s +
+\omega_2^2)}$$</span></p>
+<p><span class="math display">$$G_{21} = K' \frac{\omega_z^2}{s^2 +
+2\omega_z\zeta_zs + \omega_z^2}$$</span></p>
+<p>K’ can be found by normalizing the steady state amplitude of the
+individual sine by the input amplitude.</p>
+<p>The table below combines all this data for model parameters.</p>
+<table>
+<caption>Model Parameters</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;"></th>
+<th colspan="2" style="text-align: center;">Sine-Sweep</th>
+<th colspan="2" style="text-align: center;">Individual Sine</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Collocated</td>
+<td style="text-align: center;">Non - Collocated</td>
+<td style="text-align: center;">Collocated</td>
+<td style="text-align: center;">Non-Collocated</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline"><em>ω</em><sub>1</sub></span> [rad/s]</td>
+<td style="text-align: center;">15.372</td>
+<td style="text-align: center;">15.345</td>
+<td style="text-align: center;">13.825</td>
+<td style="text-align: center;">14.46</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span
+class="math inline"><em>ω</em><sub>2</sub></span> [rad/s]</td>
+<td style="text-align: center;">43.285</td>
+<td style="text-align: center;">42.45</td>
+<td style="text-align: center;">41.4</td>
+<td style="text-align: center;">41.46</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline"><em>ω</em><sub><em>z</em></sub></span> [rad/s]</td>
+<td style="text-align: center;">38.347</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">38.9</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span
+class="math inline"><em>ζ</em><sub>1</sub></span></td>
+<td style="text-align: center;">0.07</td>
+<td style="text-align: center;">0.0688</td>
+<td style="text-align: center;">0.07</td>
+<td style="text-align: center;">0.0575</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline"><em>ζ</em><sub>2</sub></span></td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.04</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.03</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span
+class="math inline"><em>ζ</em><sub><em>z</em></sub></span></td>
+<td style="text-align: center;">0.02</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">0.02</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline"><em>K</em><sub>1</sub>′ (<em>C</em><em>o</em><em>l</em><em>l</em><em>o</em><em>c</em><em>a</em><em>t</em><em>e</em><em>d</em>) <em>K</em><sub>2</sub>′ (<em>N</em><em>o</em><em>n</em>−<em>C</em><em>o</em><em>l</em><em>l</em><em>o</em><em>c</em><em>a</em><em>t</em><em>e</em><em>d</em>)</span></td>
+<td style="text-align: center;">16.03</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">13.825</td>
+<td style="text-align: center;">13.6678</td>
+</tr>
+</tbody>
+</table>
+<p>Using these model parameters, the system parameters can be. found.
+<span
+class="math inline"><em>I</em><sub>1</sub>, <em>k</em><sub>2</sub>, <em>c</em><sub>1</sub></span>
+can be identified from the 1-DOF response. It was assumed that <span
+class="math inline"><em>k</em><sub>1</sub></span> = 0 and <span
+class="math inline"><em>c</em><sub>2</sub></span> = 0. Now comparing
+equations (6), (7) and (8) and (9), the following relations can be
+observed.</p>
+<p><span class="math display">$$K' = \frac{K_{HW}}{I_1};\
+K'2\zeta_z\omega_z = \frac{K_{HW}c_3}{I_1I_2};\ K'\omega_z^2 =
+\frac{K_{HW}k_2}{I_1I_2};\ 2\zeta_1\omega_1 + 2\zeta_2\omega_2 =
+\frac{c_3I_1 + c_1I_2}{I_1I_2}$$</span></p>
+<p><span class="math display">$$\omega_1^2 + \omega_2^2 +
+4\zeta_1\zeta_2\omega_1\omega_2 = \frac{c_1c_3 + k_2I_1 + k_1I_2 +
+k_2I_2}{I_1I_2};\ 2\zeta_1\omega_1\omega_2^2 +
+2\zeta_2\omega_2\omega_1^2 = \frac{c_3k_1 + c_1k_2 + c_3k_2}{I_1I_2};\
+\omega_1^2\omega_2^2 = \frac{k_1k_2}{I_1I_2}$$</span></p>
+<p>From the above equations, the model parameters can be derived and the
+results are shown below:</p>
+<table>
+<caption>System Parameters</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;"></th>
+<th colspan="2" style="text-align: center;">Sine-Sweep</th>
+<th colspan="2" style="text-align: center;">Individual Sine</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Collocated</td>
+<td style="text-align: center;">Non - Collocated</td>
+<td style="text-align: center;">Collocated</td>
+<td style="text-align: center;">Non-Collocated</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline"><em>c</em><sub>1</sub></span> [Nms/Counts]</td>
+<td style="text-align: center;">0.017</td>
+<td style="text-align: center;">0.001</td>
+<td style="text-align: center;">0.015</td>
+<td style="text-align: center;">0.0085</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span
+class="math inline"><em>c</em><sub>2</sub></span> [Nms/Counts]</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline"><em>c</em><sub>3</sub></span> [Nms/Counts]</td>
+<td style="text-align: center;">0.004</td>
+<td style="text-align: center;">0.004</td>
+<td style="text-align: center;">0.0045</td>
+<td style="text-align: center;">0.0045</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span
+class="math inline"><em>k</em><sub>1</sub></span> [Nm/Counts]</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline"><em>k</em><sub>2</sub></span> [Nm/Counts]</td>
+<td style="text-align: center;">4.4</td>
+<td style="text-align: center;">4.4</td>
+<td style="text-align: center;">4.25</td>
+<td style="text-align: center;">4.25</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span
+class="math inline"><em>k</em><sub>3</sub></span> [Nm/Counts]</td>
+<td style="text-align: center;">1.00</td>
+<td style="text-align: center;">0.92</td>
+<td style="text-align: center;">0.73</td>
+<td style="text-align: center;">0.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline"><em>K</em><sub><em>H</em><em>W</em></sub></span>
+[Nm/V]</td>
+<td style="text-align: center;">1039</td>
+<td style="text-align: center;">492.4</td>
+<td style="text-align: center;">640</td>
+<td style="text-align: center;">320</td>
+</tr>
+</tbody>
+</table>
+<h2 id="analysis-conclusion">Analysis &amp; Conclusion</h2>
+<p>Figure 3 and 4 illustrate the frequency domain response of the 2-DOF
+system. Figure 3 shows the response of the collocated disc. There are
+two peaks and one trough in the response. This is different from the
+1-DOF system response which had only one peak. The non-collocated system
+response show in figure 4 shows that there is a peak at two frequencies,
+although no trough. Analysing the figures 3b and 4b, nature of modes of
+vibration can be seen. At the first resonant frequency <span
+class="math inline"><em>ω</em><sub>1</sub></span>, both discs will
+rotate in the same direction as per the phase plots. At <span
+class="math inline"><em>o</em><em>m</em><em>e</em><em>g</em><em>a</em><sub>2</sub></span>
+however, the phase plot suggest that the direction of motion will be
+opposite to each other.</p>
+<p>The results from the sinesweep data as well as from the individual
+sine experiment are very close, although the damping for the
+non-collocated response is marginally lower (as shown in table 1). Using
+the model with the least damping, the model is created. Figure 5 and 6
+show the open loop results of the experiment along with the analytical
+model response to a step input of 500 counts. Figure 5 shows that the
+model has underestimated the damping completely, while figure 6 shows
+that although the model is over-damped for the first peak, it is
+under-damped compared to the entire experimental response.</p>
+<figure>
+<img src="OpenLoopCol.png" style="width:70.0%"
+alt="Open Loop Collocated Experimental vs Analytical" />
+<figcaption aria-hidden="true">Open Loop Collocated Experimental vs
+Analytical</figcaption>
+</figure>
+<figure>
+<img src="OpenLoopNonCol.png" style="width:70.0%"
+alt="Open Loop Non-Collocated Experimental vs Analytical" />
+<figcaption aria-hidden="true">Open Loop Non-Collocated Experimental vs
+Analytical</figcaption>
+</figure>
+<p>It is better to underestimate damping rather than overestimate it.
+The controller can bring the system to steady state, by compensating for
+less damping as predicted by model which this is safer than the
+controller assuming that system behaves better than it actually is and
+not bringing the system to steady state. From figures 5 and 6, we can
+see that the analytical model either overestimates damping or is very
+close to the experimental response. Therefore the model is good enough
+for a controller design. The controller will work for the worst case
+scenario.</p>
+<h1 id="feedback-control">Feedback Control</h1>
+<p>A controller is used to drive the system to the desired output. One
+of the hallmarks of a controller is using a negative feedback loop.
+Feedback controller means that the output of the system is fed in as an
+input to the controller. Negative feedback means that this feedback is
+subtracted from the input to give us the error. The controller is
+designed such that it minimizes this error to drive the system to the
+desired output. In a 2-DOF system controller, different controller
+designs are used to control different things.</p>
+<p>Collocated controllers are used to control the disc connected to the
+actuator directly. It is the most effective controller. The block
+diagram below shows how the Collocated controller is set up. It aims to
+control <span class="math inline"><em>x</em><sub>1</sub></span> by
+controlling the response of the collocated plant <span
+class="math inline"><em>G</em><sub><em>c</em><em>o</em><em>l</em></sub></span>
+which is defined in equation 8. In the block diagrams, <span
+class="math inline"><em>U</em>(<em>s</em>)</span> represents the control
+effort, <span
+class="math inline"><em>X</em><sub>1</sub>(<em>s</em>)</span> the
+position <span class="math inline"><em>θ</em><sub>1</sub></span> of
+directly controlled disc while <span
+class="math inline"><em>X</em><sub>2</sub>(<em>s</em>)</span> the
+position <span class="math inline"><em>θ</em><sub>2</sub></span> of the
+indirectly controlled disc.</p>
+<figure>
+<img src="Collocated/Collocated_Series_PD_Block_Diagram.png"
+style="width:70.0%"
+alt="Collocated Series PD Block Controller Diagram" />
+<figcaption aria-hidden="true">Collocated Series PD Block Controller
+Diagram</figcaption>
+</figure>
+<p>Non-Collocated Controllers are designed to control the second disk
+that is connected to the first disk by a flexible rod. The block diagram
+below shows how the Non-Collocated controller is set up. It aims to
+control <span class="math inline"><em>x</em><sub>2</sub></span> by
+controlling the response of the collocated plant <span
+class="math inline"><em>G</em><sub><em>n</em><em>c</em><em>o</em><em>l</em></sub></span>
+which is defined in equation 9. <span
+class="math inline"><em>G</em><sub><em>n</em><em>c</em><em>o</em><em>l</em></sub> = <em>G</em><sub><em>c</em><em>o</em><em>l</em></sub> • <em>G</em><sub>21</sub></span>
+in the figure below.</p>
+<figure>
+<img src="Non-Collocated/Non_Collocated_Series_PD_Block_Diagram.png"
+style="width:70.0%"
+alt="Non - Collocated Series PD Controller Block Diagram" />
+<figcaption aria-hidden="true">Non - Collocated Series PD Controller
+Block Diagram</figcaption>
+</figure>
+<p>Mixed Controllers are designed to control the velocity of the
+collocated plant and the position of the non-collocated plant, as shown
+in the figure below. It takes <span
+class="math inline"><em>x</em><sub>1</sub></span> and does a feedback
+derivative control on that while it takes <span
+class="math inline"><em>x</em><sub>2</sub></span> and controls its
+position using proportional control. This is a hybrid controller meant
+to control both the disks.</p>
+<figure>
+<img src="Mixed/Mixed_PD_Block_Diagram.png" style="width:70.0%"
+alt="Mixed PD Controller Block Diagram" />
+<figcaption aria-hidden="true">Mixed PD Controller Block
+Diagram</figcaption>
+</figure>
+<p>These 3 control objected are achieved in various ways.</p>
+<h2 id="design-approach">Design approach</h2>
+<p>The aim was to minimize the maximum overshoot and the settling time
+of the response, the control effort and the steady state error. This was
+done through PD and PID controllers, in their cascade and velocity
+feedback architectures (block diagram shown for each individual
+controller design). These controllers were designed using sisotool. The
+root locus was changed to give the desired output. The figure 10 a shows
+root locus of the PD series controlled system. To increase the design
+space, the real zero was moved sufficiently. The closed loop poles shown
+in solid pink are moved around to give the desired results, either to
+reduce maximum overshoot, settling time, control effort or steady state
+error.</p>
+<h2 id="collocated-controls">Collocated Controls</h2>
+<h3 id="pd-controller-design">PD Controller Design</h3>
+<p><strong>PD Rate Feedback</strong></p>
+<p>The rate feedback PD Controller is used to control the position of
+disc 1. The control architecture uses derivative control <span
+class="math inline"><em>K</em><sub><em>D</em></sub></span> on the
+velocity of the collocated plant, and a proportional controller <span
+class="math inline"><em>K</em><sub><em>P</em></sub></span> for the
+position of the collocated plant, as shown in the block diagram
+below.</p>
+<figure>
+<img src="Collocated/Collocated_Rate_PD_Block_Diagram.png"
+style="width:80.0%" alt="Block Diagram - PD rate feedback" />
+<figcaption aria-hidden="true">Block Diagram - PD rate
+feedback</figcaption>
+</figure>
+<p>The root-locus design in sisotool is shown below in figure 12. The
+root locus shows that there are 2 complex closed loop poles. Moving them
+gives the desired results. However increasing design space by moving the
+open loop zeros. The tiny branches seen in the root locus for
+looptransfer C2 do not move when the open loop zero is moved. This
+limits the design space. The complex poles have a small range where it
+is stable. If those poles are too close to the imaginary axis, the root
+locus in C1 becomes unstable. Therefore only one design in the
+architecture was possible.</p>
+<figure>
+<img src="Collocated/PD_rate_col_siso.png" style="width:90.0%"
+alt="Sisotool - Design of PD Rate Feedback" />
+<figcaption aria-hidden="true">Sisotool - Design of PD Rate
+Feedback</figcaption>
+</figure>
+<p>The figure 13 shows the experimental and analytical response for
+<span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.56, <em>K</em><sub><em>D</em></sub> = 0.04</span>
+designed in figure 12. The analytical response is close to the
+experimental response. The design has almost no overshoot. It settles in
+around 0.5 seconds, which is quite fast. It also has a small steady
+state error at 29 counts. The analytical steady state is slightly higher
+than the experimental one. This is due to viscous friction in the real
+system which makes the system settle to a lower steady state. The steady
+state error cannot be zero as PD controller cannot achieve it.</p>
+<figure>
+<img src="Collocated/PD_Rate_Col.png" style="width:80.0%"
+alt="PD Rate Feedback Collocated Experimental - K_p = 0.56, K_D = 0.04" />
+<figcaption aria-hidden="true">PD Rate Feedback Collocated Experimental
+- <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.56, <em>K</em><sub><em>D</em></sub> = 0.04</span></figcaption>
+</figure>
+<p>This design is still quite good, although the only one for the rate
+feedback. The control effort, shown in figure 14, settles to a
+sufficiently low value, although it starts at quite a high value. This
+is another limitation of the velocity feedback design, as further
+increase in <span
+class="math inline"><em>K</em><sub><em>P</em></sub></span> for a better
+controller would cause a higher control effort which would not be
+implementable.</p>
+<figure>
+<img src="Collocated/PD_Rate_Col_Control_Effort.png" style="width:90.0%"
+alt="PD Rate Feedback Collocated Control Effort" />
+<figcaption aria-hidden="true">PD Rate Feedback Collocated Control
+Effort</figcaption>
+</figure>
+<p><strong>PD Series - Minimizing Overshoot</strong></p>
+<p>PD series controller gives us more design space than the rate
+feedback architecture to give us a better controller.</p>
+<p>The PD series controller for a collocated system has the following
+general structure. The controller takes <span
+class="math inline"><em>x</em><sub>1</sub></span> as the negative
+feedback and aims to control it using <span
+class="math inline"><em>K</em><sub><em>P</em></sub></span> and <span
+class="math inline"><em>K</em><sub><em>D</em></sub></span> in
+series.</p>
+<figure>
+<img src="Collocated/Collocated_Series_PD_Block_Diagram.png"
+style="width:90.0%" alt="Block Diagram - PD Series Collocated" />
+<figcaption aria-hidden="true">Block Diagram - PD Series
+Collocated</figcaption>
+</figure>
+<p>The root-locus design is shown in figure 16. This design aims to
+minimize maximum overshoot in the system.</p>
+<figure>
+<img src="Collocated/PD_series_col_overshoot_siso.png"
+style="width:80.0%"
+alt="Sisotool - Design of PD Series - Minimizing Overshoot" />
+<figcaption aria-hidden="true">Sisotool - Design of PD Series -
+Minimizing Overshoot</figcaption>
+</figure>
+<p>As shown in the experimental response in figure 17., the maximum
+overshoot is close to 1 %. It almost eliminates the overshoot in the
+response. The steady state error is not too large, at 26 counts. The
+analytical model is slightly higher as it underestimates damping and
+does not account for viscous friction in the actual system. The settling
+time is high, at 1.2 seconds. The controller values, <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.615, <em>K</em><sub><em>D</em></sub> = 0.047</span>
+are not too high and therefore implementable.</p>
+<figure>
+<img src="Collocated/PD_Series_Col_MaxOvershoot.png" style="width:80.0%"
+alt="PD Series Collocated Minimizing Overshoot - K_p = 0.615, K_D = 0.047" />
+<figcaption aria-hidden="true">PD Series Collocated Minimizing Overshoot
+- <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.615, <em>K</em><sub><em>D</em></sub> = 0.047</span></figcaption>
+</figure>
+<p>The control effort, shown in figure 18, settles to a sufficiently low
+value, although it starts at quite a high value.</p>
+<figure>
+<img src="Collocated/PD_Series_Col_MaxOvershoot_Control_Effort.png"
+style="width:80.0%"
+alt="PD Series Collocated Minimizing Overshoot - Control Effort" />
+<figcaption aria-hidden="true">PD Series Collocated Minimizing Overshoot
+- Control Effort</figcaption>
+</figure>
+<p><strong>PD Series - Minimize Settling Time and Control
+Effort</strong></p>
+<p>The root locus in figure 19 aims to design a controller that
+minimizes settling time and reduces control effort.</p>
+<figure>
+<img src="Collocated/PD_series_col_settling_time_siso.png"
+style="width:80.0%"
+alt="Sisotool - PD Series - Minimize Settling Time and Control Effort" />
+<figcaption aria-hidden="true">Sisotool - PD Series - Minimize Settling
+Time and Control Effort</figcaption>
+</figure>
+<p>The figure 20 shows the experimental response. Although settling time
+is lower at 0.97 seconds, this design has a higher steady state error at
+38.5 counts, and high maximum overshoot. This is because the <span
+class="math inline"><em>K</em><sub><em>D</em></sub></span> is very low
+at 0.0066. This design is not desirable, as higher overshoot causes more
+wear and tear and might break the system and increase viscous friction.
+The figure 21 shows the the control effort. Although the control effort
+settles at a similar value from the previous design, it starts at a
+lower value of around 53 counts.</p>
+<figure>
+<img src="Collocated/PD_Series_Col_SettlingTime.png" style="width:85.0%"
+alt="PD Series Collocated Minimize Settling Time and Control Effort - K_p = 0.376, K_D = 0.0066" />
+<figcaption aria-hidden="true">PD Series Collocated Minimize Settling
+Time and Control Effort - <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.376, <em>K</em><sub><em>D</em></sub> = 0.0066</span></figcaption>
+</figure>
+<figure>
+<img src="Collocated/PD_Series_Col_SettlingTime_Control_Effort.png"
+style="width:80.0%"
+alt="PD Series Collocated Minimize Settling Time and Control Effort - Control Effort" />
+<figcaption aria-hidden="true">PD Series Collocated Minimize Settling
+Time and Control Effort - Control Effort</figcaption>
+</figure>
+<p><strong>PD Series - Minimize Steady State Error</strong></p>
+<p>This design aims to reduce the steady state error in the response.
+The root locus below shows the design space.</p>
+<figure>
+<img src="Collocated/PD_series_col_steadystate_siso.png"
+style="width:80.0%"
+alt="Sisotool - PD Series - Minimize Steady State Error" />
+<figcaption aria-hidden="true">Sisotool - PD Series - Minimize Steady
+State Error</figcaption>
+</figure>
+<p>As seen in figure 23, the steady state error is very low, at 5.5
+counts. This is very good for a PD controller with no integral control.
+The design achieves its objectives. This is low steady state error is
+achieved due to a relatively high <span
+class="math inline"><em>K</em><sub><em>P</em></sub></span> of 3.06. This
+high <span class="math inline"><em>K</em><sub><em>P</em></sub></span>
+means that the control effort too is very large, as seen in figure 24.
+The control effort starts at around 450 counts.</p>
+<figure>
+<img src="Collocated/PD_Series_Col_steady_state_error.png"
+style="width:80.0%"
+alt="PD Series Collocated Minimize Steady State Error - - K_p = 3.06, K_D = 0.048" />
+<figcaption aria-hidden="true">PD Series Collocated Minimize Steady
+State Error - - <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 3.06, <em>K</em><sub><em>D</em></sub> = 0.048</span></figcaption>
+</figure>
+<figure>
+<img
+src="Collocated/PD_Series_Col_steady_state_error_Control_Effort.png"
+style="width:80.0%"
+alt="PD Series Collocated Minimize Steady State Error - Control Effort" />
+<figcaption aria-hidden="true">PD Series Collocated Minimize Steady
+State Error - Control Effort</figcaption>
+</figure>
+<p><strong>PD Series - Best Fit</strong></p>
+<p>From the previous designs, we see that there is a trade off between
+low steady state error, minimizing overshoot and the control effort.
+Balancing all these criteria, we have our best design shown below.</p>
+<figure>
+<img src="Collocated/PD_series_col_best_fit_siso.png"
+style="width:80.0%" alt="Sisotool - PD Series - Best Fit" />
+<figcaption aria-hidden="true">Sisotool - PD Series - Best
+Fit</figcaption>
+</figure>
+<p>This design has a <span
+class="math inline"><em>K</em><sub><em>P</em></sub></span> of 4.34 and
+<span class="math inline"><em>K</em><sub><em>D</em></sub></span> 0.082.
+The results are shown in the figure below. The response has very low
+steady state error, at just 4 counts. It has no maximum overshoot. It
+does some very small vibrations, indicating a pseudo pole very close to
+the imaginary axis. The impact of psuedo poles are not seen in the
+analytical model which goes to steady state. But in reality, the fact
+that the close loop poles in figure 25 are so close to the imaginary
+axis give the system small but continuous oscillations.</p>
+<figure>
+<img src="Collocated/PD_Series_Col_best_Fit.png" style="width:80.0%"
+alt="PD Series Collocated Best Fit" />
+<figcaption aria-hidden="true">PD Series Collocated Best
+Fit</figcaption>
+</figure>
+<figure>
+<img src="Collocated/PD_Series_Col_best_Fit_Control_Effort.png"
+style="width:80.0%"
+alt="PD Series Collocated best fit - Control Effort" />
+<figcaption aria-hidden="true">PD Series Collocated best fit - Control
+Effort</figcaption>
+</figure>
+<p>Although control effort starts very high at 650 counts, the
+controller can give such high control effort and therefore this design
+gives us the best response.</p>
+<h3 id="pid-controller-design">PID Controller Design</h3>
+<p>PID controllers are supposed to perform better than PD controllers,
+as they have an integral control that drives the system to steady state
+with zero steady state error. Just like for PD control, we have series
+and rate feedback architecture.</p>
+<p><strong>PID Rate Feedback</strong></p>
+<p>The block diagram of the PID rate feedback is shown below. The only
+difference from PD controller is the extra <span
+class="math inline"><em>K</em><sub><em>i</em></sub></span> term which is
+series with the proportional control.</p>
+<figure>
+<img src="Collocated/Collocated_Rate_PID_Block_Diagram.png"
+style="width:80.0%"
+alt="PID Series Collocated Rate Feedback Block Diagram" />
+<figcaption aria-hidden="true">PID Series Collocated Rate Feedback Block
+Diagram</figcaption>
+</figure>
+<p>Just like in PD, PID controllers are also designed to minimize
+overshoot, settling time and control effort. Steady state is not
+controlled as PID always drives the system to steady state.</p>
+<p><strong>PID Rate Feedback - Minimize Maximum Overshoot</strong></p>
+<figure>
+<img src="Collocated/PID_Rate_Feedback_Min_Max_Overshoot.png"
+style="width:80.0%"
+alt="PID Collocated Rate Feedback Sisotool - Minimum Maximum Overshoot - K_p = 0.39, K_D = 0.011, K_i = 0.36" />
+<figcaption aria-hidden="true">PID Collocated Rate Feedback Sisotool -
+Minimum Maximum Overshoot - <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.39, <em>K</em><sub><em>D</em></sub> = 0.011, <em>K</em><sub><em>i</em></sub> = 0.36</span></figcaption>
+</figure>
+<p>The figure above aims to design a PID controller with no overshoot.
+The <span
+class="math inline"><em>K</em><sub><em>P</em></sub>, <em>K</em><sub><em>D</em></sub>, <em>K</em><sub><em>i</em></sub></span>
+values are reasonably implementable. The graph below shows the
+experimental and analytical response. The experimental response shows
+creep in the machine. The machine is building up all the error from
+integral control. This makes any PID controller on our machine
+unimplementable. Therefore we only have designs shows in the figures
+below.</p>
+<figure>
+<img src="Collocated/PID_Notworking_Exp.png" style="width:80.0%"
+alt="PID Collocated Rate Feedback Experimental - Minimum Maximum Overshoot - K_p = 0.39, K_D = 0.011, K_i = 0.36" />
+<figcaption aria-hidden="true">PID Collocated Rate Feedback Experimental
+- Minimum Maximum Overshoot - <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.39, <em>K</em><sub><em>D</em></sub> = 0.011, <em>K</em><sub><em>i</em></sub> = 0.36</span></figcaption>
+</figure>
+<p><strong>PID Rate Feedback - Minimize Settling Time</strong></p>
+<p>This design aims to reduce settling time.</p>
+<figure>
+<img src="Collocated/PID_Rate_Feedback_Min_Settling_time.png"
+style="width:80.0%"
+alt="PID Collocated Rate Feedback Sisotool - Minimum Settling Time - K_p = 0.21, K_D = 0.011, K_i = 2.21" />
+<figcaption aria-hidden="true">PID Collocated Rate Feedback Sisotool -
+Minimum Settling Time - <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.21, <em>K</em><sub><em>D</em></sub> = 0.011, <em>K</em><sub><em>i</em></sub> = 2.21</span></figcaption>
+</figure>
+<p><strong>PID Rate Feedback - Minimize Control Effort</strong></p>
+<p>This design aims to reduce control effort.</p>
+<figure>
+<img src="Collocated/PID_Rate_Feedback_Min_Control_effort.png"
+style="width:80.0%"
+alt="PID Collocated Rate Feedback Sisotool - Minimum Control Effort - K_p = 0.11, K_D = 0.013, K_i = 2.23" />
+<figcaption aria-hidden="true">PID Collocated Rate Feedback Sisotool -
+Minimum Control Effort - <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.11, <em>K</em><sub><em>D</em></sub> = 0.013, <em>K</em><sub><em>i</em></sub> = 2.23</span></figcaption>
+</figure>
+<p><strong>PID Rate Feedback - Best Fit</strong></p>
+<p>This is the best fit design for rate feedback that trades off some
+increased settling time and overshoot for lower control effort to make
+the controller implementable.</p>
+<figure>
+<img src="Collocated/PID_Rate_Feedback_Best_fit.png" style="width:80.0%"
+alt="PID Collocated Rate Feedback Sisotool - Best Fit - K_p = 0.45, K_D = 0.013, K_i = 2.438" />
+<figcaption aria-hidden="true">PID Collocated Rate Feedback Sisotool -
+Best Fit - <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.45, <em>K</em><sub><em>D</em></sub> = 0.013, <em>K</em><sub><em>i</em></sub> = 2.438</span></figcaption>
+</figure>
+<p><strong>PID Series</strong></p>
+<p>In the series architecture, only one design was possible as the
+branches are limited. Moving the open loop zeros does not change the
+poles of the small branches in figure 34 root locus. Increasing the
+design space more increases <span
+class="math inline"><em>K</em><sub><em>i</em></sub></span> which would
+make this design hard to implementable.</p>
+<figure>
+<img src="Collocated/PID_Series.png" style="width:80.0%"
+alt="PID Collocated Series Sisotool - K_p = 0.0324, K_D = 0.6886, K_i = 12.98" />
+<figcaption aria-hidden="true">PID Collocated Series Sisotool - <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.0324, <em>K</em><sub><em>D</em></sub> = 0.6886, <em>K</em><sub><em>i</em></sub> = 12.98</span></figcaption>
+</figure>
+<h3 id="analysis">Analysis</h3>
+<p>Comparison between PD and PID is not quite possible as the PID
+controllers were not implementable. However at a theoretical level, we
+can say that a PD controller is sufficiently well at controlling the
+system, with steady state error as low as 5 counts. Therefore a PID
+controller is not needed as all the problems of high control effort,
+over-controlling and accumulating error. PD controller can give us low
+settling time, low overshoot and implementable control effort.</p>
+<h2 id="non-collocated-controls">Non-Collocated Controls</h2>
+<p>Non-Collocated control controls the second disc indirectly.</p>
+<p><strong>PD Series Non-Collocated</strong></p>
+<p>The block diagram below shows the general architecture of
+non-collocated PD controller. It tries to control <span
+class="math inline"><em>x</em><sub>2</sub></span>. It takes <span
+class="math inline"><em>x</em><sub>2</sub></span> as negative feedback
+and gives a control effort <span class="math inline"><em>u</em></span>
+for the plant <span
+class="math inline"><em>G</em><sub><em>n</em><em>c</em><em>o</em><em>l</em></sub></span>,
+where <span
+class="math inline"><em>G</em><sub><em>n</em><em>c</em><em>o</em><em>l</em></sub> = <em>G</em><sub><em>c</em><em>o</em><em>l</em></sub> • <em>G</em><sub>21</sub></span>.</p>
+<figure>
+<img src="Non-Collocated/Non_Collocated_Series_PD_Block_Diagram.png"
+style="width:80.0%" alt="PD Non-Collocated Series Block Diagram" />
+<figcaption aria-hidden="true">PD Non-Collocated Series Block
+Diagram</figcaption>
+</figure>
+<p>The controller was designed using sisotool root-locus method. However
+as shown in figure 36, the design region for a stable controller is too
+small. For this design, the <span
+class="math inline"><em>K</em><sub><em>P</em></sub></span> and <span
+class="math inline"><em>K</em><sub><em>D</em></sub></span> values are
+too low to be implementable.</p>
+<figure>
+<img src="Non-Collocated/PD_Non_collocated_PD_sisotool.png"
+style="width:80.0%"
+alt="PD Non-Collocated Series Sisotool - K_P =0.033; K_D = 0.000347" />
+<figcaption aria-hidden="true">PD Non-Collocated Series Sisotool - <span
+class="math inline"><em>K</em><sub><em>P</em></sub> = 0.033; <em>K</em><sub><em>D</em></sub> = 0.000347</span></figcaption>
+</figure>
+<p><strong>PID Series Non-Collocated</strong></p>
+<p>The block diagram below shows the general architecture of
+non-collocated PID controller. It tries to control <span
+class="math inline"><em>x</em><sub>2</sub></span>. It takes <span
+class="math inline"><em>x</em><sub>2</sub></span> as negative feedback
+and gives a control effort <span class="math inline"><em>u</em></span>
+for the plant <span
+class="math inline"><em>G</em><sub><em>n</em><em>c</em><em>o</em><em>l</em></sub></span>,
+where <span
+class="math inline"><em>G</em><sub><em>n</em><em>c</em><em>o</em><em>l</em></sub> = <em>G</em><sub><em>c</em><em>o</em><em>l</em></sub> • <em>G</em><sub>21</sub></span>.
+It should drive <span class="math inline"><em>x</em><sub>2</sub></span>
+to steady state error of 0.</p>
+<figure>
+<img src="Non-Collocated/Non_Collocated_Series_PID_Block_Diagram.png"
+style="width:80.0%" alt="PID Non-Collocated Series Block Diagram" />
+<figcaption aria-hidden="true">PID Non-Collocated Series Block
+Diagram</figcaption>
+</figure>
+<p>The controller was designed using sisotool root-locus method. However
+as shown in figure 38, the design region for a stable controller is too
+small. For this design, the <span
+class="math inline"><em>K</em><sub><em>P</em></sub></span>, <span
+class="math inline"><em>K</em><sub><em>i</em></sub></span> and <span
+class="math inline"><em>K</em><sub><em>D</em></sub></span> values are
+too low to be implementable. Also the sisotool response shows a higher
+order response than that of a second order system. These smaller
+oscillations cause a lot of wear and tear in the actual system while
+implementing. Therefore this design is not implementable.</p>
+<figure>
+<img src="Non-Collocated/PID_Non_collocated_sisotool.png"
+style="width:80.0%"
+alt="PID Non-Collocated Series Sisotool - K_P =0.023; K_D = 0.0046; K_i=0.31" />
+<figcaption aria-hidden="true">PID Non-Collocated Series Sisotool -
+<span
+class="math inline"><em>K</em><sub><em>P</em></sub> = 0.023; <em>K</em><sub><em>D</em></sub> = 0.0046; <em>K</em><sub><em>i</em></sub> = 0.31</span></figcaption>
+</figure>
+<h2 id="mixed-controls">Mixed Controls</h2>
+<p>Mixed Control is a way of controlling both disc 1 and disc 2. It
+controls the velocity of the collocated plant by using derivative
+control on <span class="math inline"><em>x</em><sub>1</sub></span> while
+it controls the position of <span
+class="math inline"><em>x</em><sub>2</sub></span> using the proportional
+control.</p>
+<p><strong>PD Mixed</strong></p>
+<p>The block diagram below shows the PD mixed controller
+architecture.</p>
+<figure>
+<img src="Mixed/Mixed_PD_Block_Diagram.png" style="width:80.0%"
+alt="PD Mixed Block Diagram" />
+<figcaption aria-hidden="true">PD Mixed Block Diagram</figcaption>
+</figure>
+<p>To design this, it was done in two parts. Firstly, <span
+class="math inline"><em>G</em><sub><em>c</em><em>o</em><em>l</em></sub></span>
+is controlled using derivative control. The sisotool design below shows
+the root-locus <span
+class="math inline"><em>G</em><sub><em>c</em><em>o</em><em>l</em></sub></span>
+with derivative control. Using this, <span
+class="math inline"><em>K</em><sub><em>D</em></sub></span> is designed
+to be 0.047 which reduces overshoot and gives siufficient damping to the
+system.</p>
+<figure>
+<img src="Mixed/PD_Derivative_Mixed.png" style="width:80.0%"
+alt="PD Mixed - Derivative G_{col} control - K_D = 0.047" />
+<figcaption aria-hidden="true">PD Mixed - Derivative <span
+class="math inline"><em>G</em><sub><em>c</em><em>o</em><em>l</em></sub></span>
+control - <span
+class="math inline"><em>K</em><sub><em>D</em></sub> = 0.047</span></figcaption>
+</figure>
+<p>The second part of the design process included designing the
+proportional control for the entire system <span
+class="math inline">$G_{des} =
+\frac{G_{21}G_{col}}{1+K_DG_{col}}$</span>. The sisotool below shows the
+root-locus design.</p>
+<figure>
+<img src="Mixed/PD_Proportional_Mixed_sisotool.png" style="width:80.0%"
+alt="PD Mixed - Proportional G_{des} control - K_p = 0.17" />
+<figcaption aria-hidden="true">PD Mixed - Proportional <span
+class="math inline"><em>G</em><sub><em>d</em><em>e</em><em>s</em></sub></span>
+control - <span
+class="math inline"><em>K</em><sub><em>p</em></sub> = 0.17</span></figcaption>
+</figure>
+<p>From this process, the <span
+class="math inline"><em>K</em><sub><em>P</em></sub></span> was designed
+to be 0.17.</p>
+<p>This design was implemented and the experimental and analytical plots
+are shown below.</p>
+<figure>
+<img src="Mixed/Mixed_PD_Experimental.png" style="width:80.0%"
+alt="PD Mixed - Experimental vs Analytical Responses" />
+<figcaption aria-hidden="true">PD Mixed - Experimental vs Analytical
+Responses</figcaption>
+</figure>
+<p>Mixed controller results show that <span
+class="math inline"><em>x</em><sub>1</sub></span> has a lesser steady
+state error (about 40 counts) than <span
+class="math inline"><em>x</em><sub>2</sub></span> which has a steady
+state error of 150 counts. This is expected as <span
+class="math inline"><em>x</em><sub>1</sub></span> is directly controlled
+while <span class="math inline"><em>x</em><sub>2</sub></span> is
+indirectly controlled. The analytical plots are at a higher steady state
+than experimental results as the real system has viscous friction that
+reduces steady state that is actually realized. The controller is
+designed well. The response does not have any overshoot, however it has
+a high settling time.</p>
+<p><strong>PID Mixed</strong></p>
+<p>The block diagram below shows the PID mixed controller
+architecture.</p>
+<figure>
+<img src="Mixed/Mixed_PID_Block_Diagram.png" style="width:80.0%"
+alt="PID Mixed Block Diagram" />
+<figcaption aria-hidden="true">PID Mixed Block Diagram</figcaption>
+</figure>
+<p>This controller is designed in the same way as PD control with the
+same <span class="math inline"><em>K</em><sub><em>D</em></sub></span>
+value. The design for <span
+class="math inline"><em>K</em><sub><em>P</em></sub></span> and <span
+class="math inline"><em>K</em><sub><em>i</em></sub></span> is shown in
+the sisotool screenshot below.</p>
+<figure>
+<img src="Mixed/PID_Proportionaland Integral_Mixed_sisotool.png"
+style="width:80.0%" alt="PID Mixed K_P and K_i design" />
+<figcaption aria-hidden="true">PID Mixed <span
+class="math inline"><em>K</em><sub><em>P</em></sub></span> and <span
+class="math inline"><em>K</em><sub><em>i</em></sub></span>
+design</figcaption>
+</figure>
+<p>The <span class="math inline"><em>K</em><sub><em>P</em></sub></span>
+value is 0.06 while <span
+class="math inline"><em>K</em><sub><em>i</em></sub></span> is 0.66.
+However this design method has very small limited design space. many
+design are not possible as the system can easily become unstable, as
+shown in the root locus length in figure 44. This design could not be
+implemented as PID controllers were not working on our machine.</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>The PD series controller is the most preferred form of control for
+controlling disc 1. It gives very low steady state error even without
+integral control. The overshoot and settling time were minimal while the
+control effort was implementable. There is also ample design space to
+work with to get the desirable outcome. Non-collocated controllers have
+very limited design space. Therefore to control the second disc, mixed
+control would be preferred. It has a greater design space and can be
+implemented.</p>
+</body>
+</html>
