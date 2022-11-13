@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<!--
+	Prologue by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>devesh-bhura</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+    
+	<body class="is-preload">
+
+        <!-- Header -->
+			<div id="header">
+
+				<div class="top">
+
+					<!-- Logo -->
+						<div id="logo">
+							<span class="image avatar48"><img src="images/Headshot_small.jpg" alt="" /></span>
+							<h1 id="title">Devesh Bhura</h1>
+							<p>Robotics Engineer</p>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								
+								<li><a href="index.html#portfolio" id="portfolio-link"><span class="icon solid fa-th">Portfolio</span></a></li>
+								<li><a href="index.html#about" id="about-link"><span class="icon solid fa-user">About Me</span></a></li>
+								<li><a href="resume.html" id="resume-link"><span class="icon solid fa-th">Resume</span></li>
+								
+							</ul>
+						</nav>
+
+				</div>
+
+                <div class="bottom">
+
+					<!-- Social Icons -->
+						<ul class="icons">
+							<li><a href="https://twitter.com/devbhura" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="https://www.linkedin.com/in/devesh-bhura/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://github.com/devbhura" class="icon brands fa-github"><span class="label">Github</span></a></li>
+							<!-- <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+							<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li> -->
+						</ul>
+
+				</div>
+
+			</div>
+
+		<!-- Main -->
+        <div id="main">
+            
+            <section id="Balance the Board" class="post">
+                <!-- <div class="container"> -->
+
+                    <header class="major">
+                        <h2>Controller design of rotational disc</h2>
+                        <span class="date">January 2021 - May 2021</span>
+                        <p>PD PID Controller design for 2 DOF system using root locus</p>
+                        
+                    </header>
+                    <style>
+                        .iframe-container {
+                              text-align:left;
+                                width:100%;
+                        }
+                    </style><br/>
+                <div class="container">
+                    
+                    
+                    <h2>Overview</h2>
+                    <p align="justify">
+                        
+                        The report below details the process of building several controllers,
+                        such as PD and PID controllers for 2-DOF systems. The 2-DOF system
+                        consists of two circular plates connected by a flexible rod that acts as
+                        a torsional spring, as shown below in figure 1.
+                    </p>
+                    <figure>
+                        <img src="Schematic.png" style="width:70.0%"
+                        alt="Schematic diagram of 2-DOF system setup" />
+                        <figcaption aria-hidden="true">Schematic diagram of 2-DOF system
+                        setup</figcaption>
+                        </figure>
+
+                        <p align="justify">
+                            Torque <span class="math inline"><em>τ</em></span> is applied to the
+                            lower plate which moves the plate <span
+                            class="math inline"><em>I</em><sub>1</sub></span>. The plate <span
+                            class="math inline"><em>I</em><sub>1</sub></span> moves an angle <span
+                            class="math inline"><em>θ</em><sub>1</sub></span>, which is directly
+                            controlled by the controller. <span
+                            class="math inline"><em>I</em><sub>1</sub></span> is also connected to
+                            the plate <span class="math inline"><em>I</em><sub>2</sub></span>
+                            through a flexible rod. The motion in <span
+                            class="math inline"><em>I</em><sub>1</sub></span> causes motion in <span
+                            class="math inline"><em>I</em><sub>2</sub></span>. This motion is
+                            captured by <span class="math inline"><em>θ</em><sub>2</sub></span>. The
+                            objective in this report is to show various controllers for <span
+                            class="math inline"><em>I</em><sub>1</sub></span> and <span
+                            class="math inline"><em>I</em><sub>2</sub></span>.
+                        </p>
+                        
+
+                    <h2> FeedBack Control Design </h2>
+
+                    <p align="justify" >A controller is used to drive the system to the desired output. One
+                        of the hallmarks of a controller is using a negative feedback loop.
+                        Feedback controller means that the output of the system is fed in as an
+                        input to the controller. Negative feedback means that this feedback is
+                        subtracted from the input to give us the error. The controller is
+                        designed such that it minimizes this error to drive the system to the
+                        desired output. In a 2-DOF system controller, different controller
+                        designs are used to control different things.
+
+                    </p>
+                    <p align="justify" >Collocated controllers are used to control the disc connected to the
+                        actuator directly. It is the most effective controller. The block
+                        diagram below shows how the Collocated controller is set up. It aims to
+                        control <span class="math inline"><em>x</em><sub>1</sub></span> by
+                        controlling the response of the collocated plant <span
+                        class="math inline"><em>G</em><sub><em>c</em><em>o</em><em>l</em></sub></span>
+                        which is defined in equation 8. In the block diagrams, <span
+                        class="math inline"><em>U</em>(<em>s</em>)</span> represents the control
+                        effort, <span
+                        class="math inline"><em>X</em><sub>1</sub>(<em>s</em>)</span> the
+                        position <span class="math inline"><em>θ</em><sub>1</sub></span> of
+                        directly controlled disc while <span
+                        class="math inline"><em>X</em><sub>2</sub>(<em>s</em>)</span> the
+                        position <span class="math inline"><em>θ</em><sub>2</sub></span> of the
+                        indirectly controlled disc.</p>
+                        <figure>
+                        <img src="Collocated/Collocated_Series_PID_Block_Diagram.png"
+                        style="width:70.0%"
+                        alt="Collocated Series PID Block Controller Diagram" />
+                        <figcaption aria-hidden="true">Collocated Series PID Block Controller
+                        Diagram</figcaption>
+                        </figure>
+                        <p align="justify" >Non-Collocated Controllers are designed to control the second disk
+                        that is connected to the first disk by a flexible rod. The block diagram
+                        below shows how the Non-Collocated controller is set up. It aims to
+                        control <span class="math inline"><em>x</em><sub>2</sub></span> by
+                        controlling the response of the collocated plant <span
+                        class="math inline"><em>G</em><sub><em>n</em><em>c</em><em>o</em><em>l</em></sub></span>
+                        which is defined in equation 9. <span
+                        class="math inline"><em>G</em><sub><em>n</em><em>c</em><em>o</em><em>l</em></sub> = <em>G</em><sub><em>c</em><em>o</em><em>l</em></sub> • <em>G</em><sub>21</sub></span>
+                        in the figure below.</p>
+                        <figure>
+                        <img src="Non-Collocated/Non_Collocated_Series_PD_Block_Diagram.png"
+                        style="width:70.0%"
+                        alt="Non - Collocated Series PD Controller Block Diagram" />
+                        <figcaption aria-hidden="true">Non - Collocated Series PD Controller
+                        Block Diagram</figcaption>
+                        </figure>
+                        <p align="justify" >Mixed Controllers are designed to control the velocity of the
+                        collocated plant and the position of the non-collocated plant, as shown
+                        in the figure below. It takes <span
+                        class="math inline"><em>x</em><sub>1</sub></span> and does a feedback
+                        derivative control on that while it takes <span
+                        class="math inline"><em>x</em><sub>2</sub></span> and controls its
+                        position using proportional control. This is a hybrid controller meant
+                        to control both the disks.</p>
+                        <figure>
+                        <img src="Mixed/Mixed_PD_Block_Diagram.png" style="width:70.0%"
+                        alt="Mixed PD Controller Block Diagram" />
+                        <figcaption aria-hidden="true">Mixed PD Controller Block
+                        Diagram</figcaption>
+                        </figure>
+                        <p align="justify" >These 3 control objected are achieved in various ways.</p>
+
+                    <h2> Design Approach </h2>
+                    <p align="justify">The aim was to minimize the maximum overshoot and the settling time
+                        of the response, the control effort and the steady state error. This was
+                        done through PD and PID controllers, in their cascade and velocity
+                        feedback architectures (block diagram shown for each individual
+                        controller design). These controllers were designed using sisotool. The
+                        root locus was changed to give the desired output. The figure 10 a shows
+                        root locus of the PD series controlled system. To increase the design
+                        space, the real zero was moved sufficiently. The closed loop poles shown
+                        in solid pink are moved around to give the desired results, either to
+                        reduce maximum overshoot, settling time, control effort or steady state
+                        error.</p>
+                    <h2>Link for report</h2>
+                    <p align="justify"> 
+                        For full report, please <a href="https://drive.google.com/file/d/1q1YOXfV2DM7n4pNnkuFyvwsLoAvcJ1l1/view?usp=sharing" target="_blank" rel="noopener noreferrer">check this out</a>
+                    </p>
+
+                   
+
+                </div>
+            </section>
+        
+        </div>

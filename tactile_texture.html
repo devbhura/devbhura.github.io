@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<!--
+	Prologue by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>devesh-bhura</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+    
+	<body class="is-preload">
+
+        <!-- Header -->
+			<div id="header">
+
+				<div class="top">
+
+					<!-- Logo -->
+						<div id="logo">
+							<span class="image avatar48"><img src="images/Headshot_small.jpg" alt="" /></span>
+							<h1 id="title">Devesh Bhura</h1>
+							<p>Robotics Engineer</p>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								
+								<li><a href="index.html#portfolio" id="portfolio-link"><span class="icon solid fa-th">Portfolio</span></a></li>
+								<li><a href="index.html#about" id="about-link"><span class="icon solid fa-user">About Me</span></a></li>
+								<li><a href="resume.html" id="resume-link"><span class="icon solid fa-th">Resume</span></li>
+								
+							</ul>
+						</nav>
+
+				</div>
+
+                <div class="bottom">
+
+					<!-- Social Icons -->
+						<ul class="icons">
+							<li><a href="https://twitter.com/devbhura" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="https://www.linkedin.com/in/devesh-bhura/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://github.com/devbhura" class="icon brands fa-github"><span class="label">Github</span></a></li>
+							<!-- <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+							<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li> -->
+						</ul>
+
+				</div>
+
+			</div>
+
+		<!-- Main -->
+        <div id="main">
+            
+            <section id="Texture Classification from record needle" class="post">
+                <!-- <div class="container"> -->
+
+                    <header class="major">
+                        <h2>Texture Classification using tactile sensors</h2>
+                        <span class="date">January 2022 - March 2022</span>
+                        <p>Use frequency domain and time domain data from record needle to classify textures <a href="https://drive.google.com/file/d/1JyCpU1RJoYgjayAxIaf4nsQ-xpZ3C3Ma/view?usp=sharing" target="_blank" rel="noopener noreferrer">(full report)</a></p>
+                        
+                    </header>
+                    <style>
+                        .iframe-container {
+                              text-align:left;
+                                width:100%;
+                        }
+                    </style><br/>
+                <div class="container">
+                    
+                    
+                    <h2>Overview</h2>
+                    <p align="justify">
+                        
+                        This project deals with enhancing the knowledge about tactile sensing with a low
+                        cost effective sensor to classify different textures. The new approach was to use a record
+                        needle to generate voltage signals by running a texture underneath the needle. Feature
+                        selection and extraction was done on the data from the right and left channel of the
+                        record needle, and then the textures were classified. 
+                    </p>
+                    <figure>
+                        <img src="tactile_setup.png" style="width:70.0%"
+                        alt="Tactile setup" />
+                        <figcaption aria-hidden="true">Data collection setup with the record player, record needle and oscilloscope</figcaption>
+                        </figure>
+
+                        <p align="justify">
+                            This experiment was conducted on
+                            11 different textures. Pre-processing of the data included conducting an FFT and PCA
+                            to get features purely in the frequency domain, and also manually selecting features
+                            from the raw time series data. The best results were seen on the purely frequency
+                            domain method of feature selection and they are: Extra Trees classifier - 99.7 % test
+                            accuracy; Random Forest Classifiers - 99.7 % test accuracy; Support Vector Machines
+                            - 99.8% test accuracy; Gaussian Naive Bayes - 99.0% test accuracy; kd - tree nearest
+                            neighbor - 99.4% test accuracy. The results are comparable with results on existing
+                            research although over lesser number of samples per texture. Future work includes
+                            experimenting over larger number of samples per texture, more number of textures
+                            and potential for live classification for surface finishes.
+                        </p>
+                        
+
+                   
+                    
+                    <h2> Results </h2>
+                    <p align="justify"> While running the classifiers, the data set was split into training and testing 
+                        with a 70:30 split. The classifier was run with different sets of randomly generated splits in 
+                        training and testing data over 1000 iterations and the average results are presented below for 
+                        each of the classifier used, after optimizing hyper-parameters. C is the regularization parameter 
+                        that decides the degree of importance given to miss-classification in SVMs. The gamma parameter 
+                        decides how far the influence of a single training example reaches. For the kd nearest neighbor, 
+                        the leaf size is the number of examples in each subset being considered for the tree. Estimators 
+                        for the tree based classifiers represents the number of trees in the classifier, and maximum depth 
+                        is how deep the layers of the tree can be.</p>
+                        <ol align="left" >
+                            <li> Extra Trees (158 estimators with max depth of 15): 99.5%</li>
+                            <li> Random Forest (53 estimators with max depth of 41): 99.1% </li>
+                            <li>SVM (linear kernel with C=211 and gamma = 0.01): 99.3%</li>
+                            <li>Gaussian Naive Bayes: 95.7%</li>
+                            <li> k-Nearest Neighbor (leaf-size of 1 and 4 nearest neighbors): 95.6% </li>
+                        </ol>
+                    <h2>Link for report</h2>
+                    <p align="justify"> 
+                        For full report, please <a href="https://drive.google.com/file/d/1JyCpU1RJoYgjayAxIaf4nsQ-xpZ3C3Ma/view?usp=sharing" target="_blank" rel="noopener noreferrer">check this out</a>
+                    </p>
+
+                   
+
+                </div>
+            </section>
+        
+        </div>

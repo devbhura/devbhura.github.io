@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<!--
+	Prologue by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>devesh-bhura</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+    
+	<body class="is-preload">
+
+        <!-- Header -->
+			<div id="header">
+
+				<div class="top">
+
+					<!-- Logo -->
+						<div id="logo">
+							<span class="image avatar48"><img src="images/Headshot_small.jpg" alt="" /></span>
+							<h1 id="title">Devesh Bhura</h1>
+							<p>Robotics Engineer</p>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								
+								<li><a href="index.html#portfolio" id="portfolio-link"><span class="icon solid fa-th">Portfolio</span></a></li>
+								<li><a href="index.html#about" id="about-link"><span class="icon solid fa-user">About Me</span></a></li>
+								<li><a href="resume.html" id="resume-link"><span class="icon solid fa-th">Resume</span></li>
+								
+							</ul>
+						</nav>
+
+				</div>
+
+                <div class="bottom">
+
+					<!-- Social Icons -->
+						<ul class="icons">
+							<li><a href="https://twitter.com/devbhura" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="https://www.linkedin.com/in/devesh-bhura/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://github.com/devbhura" class="icon brands fa-github"><span class="label">Github</span></a></li>
+							<!-- <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+							<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li> -->
+						</ul>
+
+				</div>
+
+			</div>
+
+		<!-- Main -->
+        <div id="main">
+            
+            <section id="Signal Filtering" class="post">
+                <!-- <div class="container"> -->
+
+                    <header class="major">
+                        <h2>Kalman Filter based signal filtering</h2>
+                        <span class="date">May 2020 - December 2020</span>
+                        <p>Filtering signal for robust control of flying microrobot <a href="https://drive.google.com/file/d/12eoyuUAl4IdGHco-iQsMYW5NFlxBw17D/view?usp=sharing" target="_blank" rel="noopener noreferrer">(full report)</a></p>
+                        
+                    </header>
+                    <style>
+                        .iframe-container {
+                              text-align:left;
+                                width:100%;
+                        }
+                    </style><br/>
+                <div class="container">
+                    
+                    
+                    <h2>Overview</h2>
+                    <p align="justify">
+                        
+                        Flying microrobots function at very high frequency. There is high frequency noise in their signals, which need to be filtered out. 
+                        Without filtering them out, the control of robot is very unstable. The most simple way to achieve this is using a low pass filter.
+                        However that introduces delay which again introduces instability. 
+                    </p>
+                    <figure>
+                        <img src="Robot.png" style="width:70.0%"
+                        alt="Bee+ developed at USC AMSL" />
+                        <figcaption aria-hidden="true">Bee+ developed at USC AMSL</figcaption>
+                        </figure>
+
+                        <p align="justify">
+                           The other idea is to use filters such as LMS or RLS, however they depend on input signal to filter correctly and that was not available. 
+                           There a Kalman Filter approach was used, where 2 Kalman Filter approaches gave good results. 
+                        </p>
+                        
+
+                    <h2> Results </h2>
+
+                    <p align="justify" >The graph below shows the results from the Linear Kalman Filter. The blue line is the measured signal, the red is the kalman filtered 
+                        signal and the yellow is the offline filtered signal which represents the true signal. 
+                        The linear filter is good approximation however for angular velocities do not line up exactly. 
+                    </p>
+                    <figure>
+                        <img src="LinearKalmanFilterresults.png" style="width:100.0%"
+                        alt="Bee+ developed at USC AMSL" />
+                        <figcaption aria-hidden="true">The Measured signal (blue), the Filtered signal (red) and the
+                            True signal (yellow) for all the 6 states for the LKF</figcaption>
+                        </figure>
+                    <p align="justify" > The results from the extended Kalman Filter show far better results, except for the yaw angle angular velocity, there is some initial non-minimum phase response. </p>
+                        <figure>
+                        <img src="EKFresults1.png"
+                        style="width:100.0%"
+                        alt="EKF results" />
+                        <figcaption aria-hidden="true">The Measured signal (blue), the Filtered signal (red) and the
+                            True signal (yellow) for all the 6 states for the EKF</figcaption>
+                        </figure>
+                        
+                   
+                    <h2>Link for report</h2>
+                    <p align="justify"> 
+                        For more information on the equations and design involved, check out the <a href="https://drive.google.com/file/d/12eoyuUAl4IdGHco-iQsMYW5NFlxBw17D/view?usp=sharing" target="_blank" rel="noopener noreferrer">full report</a>. 
+                        This report is the property of the Autonomous Microrobotic Systems Lab at USC.
+                    </p>
+
+                   
+
+                </div>
+            </section>
+        
+        </div>
