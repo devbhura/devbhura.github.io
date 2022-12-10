@@ -61,8 +61,8 @@
                 <!-- <div class="container"> -->
 
                     <header class="major">
-                        <h2>Swarm Simulation (Ongoing)</h2>
-                        <span class="date">April 2022 - Ongoing</span>
+                        <h2>Swarm Simulation</h2>
+                        <span class="date">April 2022 - December 2022</span>
                         <p>Create a simulator for swarm using socket programming <a href="https://github.com/devbhura/swarm_simulation" target="_blank" rel="noopener noreferrer">(Github link)</a></p>
                         
                     </header>
@@ -81,8 +81,52 @@
                         creating a custom API that interfaces with the simulator. The project uses socket programming and client - server architecture to launch 
                         several instances of the robot as processes, that can communicate with a central server simulator. This central simulator keeps track of time, 
                         dynamic model of the robots, and integrates the world. There is also visualization using pygame that occurs in a seperate process. 
+                    
+                        <h2>Download and run</h2>
+                        <p align="justify">
+                            Clone the repository in a folder. Go inside <b>sim_pkg</b> folder. Run <b>python3 coachbot-simulation.py -fn userfile</b>  in sim_pkg folder. 
+                            The <b>user.py</b> file should be in <b>sim_pkg</b> folder. The user file name should be given without .py extension in the above command.
                         
+
                     </p>
+                    <p align="justify">
+                            This should launch the simulation with the mentioned number of robots running the algorithm given in the user program. 
+                            The simulation environment can be set by setting the variables in <b>config.json</b>:
+                            <ol align="left">
+                                <li> TIME_ASYNC - 0 to make the robot time synced and 1 to introduce time asynchronous initialization for robots. </li>
+                                <li> NUMBER_OF_ROBOTS - Number of robots to launch</li>
+                                <li>  COMM_RANGE - The range of communication (in meters) </li>
+                                <li> PACKET_SUCCESS_PERC - Set the success rate of message packets (values in decimal range from 0 to 1)</li>
+                                <li> REAL_TIME_FACTOR - Maximum allowable real time factor </li>
+                                <li> NUM_OF_MSGS - Maximum number of messages to keep in the buffer </li>
+                                <li> MSG_SIZE - Maximum size of each message in buffer </li>
+                                <li> WIDTH - width of the arena (vertical axis) </li>
+                                <li> LENGTH - length of the arena (horizontal axis length) </li>
+                                <li> USE_INIT_POS - use the initialization python program to initialize position of the robot</li>
+                                <li> SIM_TIME_STEP - Set the simulation time step for each loop cycle</li>
+                                <li> USE_VIS - If 1, then visualizer will be used. If 0, then visualizer will not be used and instead all states and the time are logged automatically to sim.log</li>
+                            </ol>
+
+                    </p>
+
+                    <h2>Structure</h2>
+                    <p align="justify">
+                        The main files include the following:
+                        <ol align="left">
+                            <li> simulator.py - The main simulator file. This communicates with all the robots and 
+                                keeps track of the messages and state of the world.</li>
+                            <li> robot_class.py -  Implements the robot API of the real world robots for this simulation with 
+                                communication protocols set using socket programming
+                            </li>
+                            <li> visualization.py - uses pygame to visualize the robots </li>
+                            <li> user.py - user code written by user to run </li>
+                            <li> coachbot-simulation.py - launches all the processes and programs correctly, using the config.json</li>
+                            <li> bootloader.py - launches the user code with the custom coachbot class </li>
+                        </ol>
+
+                    </p>
+
+                    <h2>Current program examples</h2>
                     <figure>
                         <img src="flocking.gif" style="width:70.0%"
                         alt="Tactile setup" />
@@ -92,20 +136,28 @@
                         <p align="justify">
                            
                         </p>
-                        
-
-                   
                     
                     <h2>  </h2>
                     <p align="justify"> </p>
-                        
+                    
+                    <h2>Future work</h2>
+                    <ol align="left">
+                        <li> Collision detection currently is done through a brute force solution and can create a bottleneck with large number 
+                            of robots. A more effecient algorithm for collision detection can speed up the simulation. 
+                        </li>
+                        <li>The visualization could be a bottleneck with large number of robots. Data is sent from the simulator every 0.05 seconds to 
+                            the visualizer thread through sockets. It will wait to send all the data. One can increase the time threshold if it is a bottleneck. 
+                            The visualization code can also be made more efficient by using Sprite and Dirty Sprite and selective update of the screen.   
+                        </li>
+
+                    </ol>
                     <h2>Link for Github</h2>
                     <p align="justify"> 
                         For more, please <a href="https://github.com/devbhura/swarm_simulation" target="_blank" rel="noopener noreferrer">check this out</a>
                     </p>
 
                    
-
+                    
                 </div>
             </section>
         
